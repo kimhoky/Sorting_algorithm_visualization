@@ -1,6 +1,7 @@
 import java.util.Random;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
@@ -66,9 +67,16 @@ class AlgorithmRunnable implements Runnable {
 
     // 배열 출력
     private void printArray(int[] array) {
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i] + " ");
+            sb.append(array[i]).append(" ");
         }
-        System.out.println();
+        sb.append("\n");
+    
+        // JTextArea에 결과를 갱신합니다.
+        SwingUtilities.invokeLater(() -> {
+            textArea.setText(sb.toString());
+        });
     }
 }
+
