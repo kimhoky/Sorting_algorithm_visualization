@@ -1,16 +1,17 @@
 import java.util.Random;
+import javax.swing.JTextPane;
+import javax.swing.text.*;
+import java.awt.*;
 
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
-    private JTextArea textArea;
+    private JTextPane textPane;
 
-    // 생성자: 알고리즘 선택과 JTextArea를 받아서 초기화합니다.
-    AlgorithmRunnable(int algorithmChoice, JTextArea textArea) {
+    // 생성자: 알고리즘 선택과 JTextPane를 받아서 초기화합니다.
+    AlgorithmRunnable(int algorithmChoice, JTextPane textPane) {
         this.algorithmChoice = algorithmChoice;
-        this.textArea = textArea;
+        this.textPane = textPane;
     }
 
     @Override
@@ -25,12 +26,12 @@ class AlgorithmRunnable implements Runnable {
 
         switch (algorithmChoice) {
             case 1:
-                textArea.append("버블 정렬 실행...\n");
+                appendText("버블 정렬 실행...\n", null);
                 bubbleSort(array); // 버블 정렬 실행
                 break;
             // ... 다른 알고리즘들 ...
             default:
-                textArea.append("잘못된 선택.\n");
+                appendText("잘못된 선택.\n", null);
                 break;
         }
     }
@@ -49,9 +50,9 @@ class AlgorithmRunnable implements Runnable {
                     swapped = true;
 
                     // 교환 후 배열을 출력하고, 0.5초 동안 대기합니다.
-                    printArray(array);
+                    printArray(array, j, j + 1);
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
                     }
@@ -66,17 +67,47 @@ class AlgorithmRunnable implements Runnable {
     }
 
     // 배열 출력
-    private void printArray(int[] array) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < array.length; i++) {
-            sb.append(array[i]).append(" ");
+    private void printArray(int[] array, int index1, int index2) {
+        StyledDocument doc = textPane.getStyledDocument();
+        Style defaultStyle = textPane.getStyle(StyleContext.DEFAULT_STYLE);
+
+        try {
+            doc.remove(0, doc.getLength()); // 이전 내용을 모두 지웁니다.
+
+            for (int i = 0; i < array.length; i++) {
+                Style style = defaultStyle;
+                if (i == index1 || i == index2) {
+                    StyleConstants.setForeground(style, Color.RED);
+                } else {
+                    StyleConstants.setForeground(style, Color.BLACK);
+                }
+
+                doc.insertString(doc.getLength(), array[i] + " ", style);
+
+                if ((i + 1) % 30 == 0) {
+                    doc.insertString(doc.getLength(), "\n", defaultStyle);
+                }
+            }
+        } catch (BadLocationException e) {
+            e.printStackTrace();
         }
-        sb.append("\n");
-    
-        // JTextArea에 결과를 갱신합니다.
-        SwingUtilities.invokeLater(() -> {
-            textArea.setText(sb.toString());
-        });
+    }
+
+    // JTextPane에 텍스트를 추가합니다.
+    private void appendText(String text, AttributeSet attributes) {
+        StyledDocument doc = textPane.getStyledDocument();
+
+        try {
+            doc.insertString(doc.getLength(), text, attributes);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
     }
 }
 
+class EmptyRunnable implements Runnable {
+    @Override
+    public void run() {
+        // 두 번째 스레드가 비워두었던 기능을 추가할 수 있습니다.
+    }
+}
