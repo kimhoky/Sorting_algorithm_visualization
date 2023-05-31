@@ -17,12 +17,18 @@ class AlgorithmRunnable implements Runnable {
 
     @Override
     public void run() {
-        // 0에서 999까지의 원소를 가진 배열을 생성합니다.
         int[] array = new int[100];
-        Random random = new Random();
-
         for (int i = 0; i < array.length; i++) {
-            array[i] = random.nextInt(100);
+            array[i] = i + 1;
+        }
+        
+        // Shuffle the array using Fisher-Yates algorithm
+        Random random = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            int temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
 
         switch (algorithmChoice) {
