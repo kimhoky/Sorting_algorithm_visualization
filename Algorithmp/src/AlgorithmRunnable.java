@@ -2,7 +2,6 @@ import java.util.Random;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
 import java.awt.*;
-import java.util.*;
 
 
 class AlgorithmRunnable implements Runnable {
@@ -73,7 +72,7 @@ class AlgorithmRunnable implements Runnable {
                     // 교환 후 배열을 출력하고, 0.5초 동안 대기합니다.
                     printArray(array, j, j + 1);
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(5);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
                     }
