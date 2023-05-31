@@ -1,54 +1,101 @@
 import java.util.Random;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
+
 import java.awt.*;
+import java.lang.reflect.Array;
 
+import javax.swing.JPanel;
 
+class sharedmemory{
+	int[] array;
+	private int redColumn=-1;
+	private int greenColumn=-1;
+	public synchronized void array(int[] array) {
+		this.array = array;
+	}
+	public synchronized void getredc(int redColumn) {
+		this.redColumn = redColumn;
+	}
+    public synchronized void getgreenc(int greenColumn) {
+    	this.greenColumn = greenColumn;
+    }
+    public synchronized int putredc() {
+    	return this.redColumn;
+    }
+    public synchronized int putgreenc() {
+    	return this.greenColumn;
+    }
+    public synchronized int[] putarray() {
+    	return this.array;
+    }
+	
+}
+ 
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
     private JTextPane textPane;
 
+    
     // 생성자: 알고리즘 선택과 JTextPane를 받아서 초기화합니다.
     AlgorithmRunnable(int algorithmChoice, JTextPane textPane) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
     }
-
+    Thread tr1;
+    valueincome vi = new valueincome();
+    sharedmemory sm = new sharedmemory();
+    	
     @Override
     public void run() {
-        int[] array = new int[100];
-        for (int i = 0; i < array.length; i++) {
-            array[i] = i + 1;
-        }
-        
-        // Shuffle the array using Fisher-Yates algorithm
-        Random random = new Random();
-        for (int i = array.length - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
+    	
+   	 int[] array = new int[100];
+     for (int i = 0; i < array.length; i++) {
+         array[i] = i + 1;
+     }
+     
+     // Shuffle the array using Fisher-Yates algorithm
+     Random random = new Random();
+     for (int i = array.length - 1; i > 0; i--) {
+         int j = random.nextInt(i + 1);
+         int temp = array[i];
+         array[i] = array[j];
+         array[j] = temp;
+     }
+     sm.array(array);
+     tr1 = new Thread(new EmptyRunnable(sm));
+     
 
         switch (algorithmChoice) {
             case 1:
                 appendText("버블 정렬 실행...\n", null);
+                tr1.start();
                 bubbleSort(array);
+                
+               
                 break;
             case 2:
                 appendText("힙 정렬 실행...\n", null);
+                tr1.start();
                 heapSort(array);
+                
+                
                 break;
             case 3:
                 appendText("퀵 정렬 실행...\n", null);
+                tr1.start();
                 quickSort(array, 0, array.length - 1); // 퀵 정렬 실행
+                
                 break;
             case 4:
                 appendText("삽입 정렬 실행...\n", null);
+                tr1.start();
                 insertionSort(array);
+                
                 break;
             case 5:
                 appendText("선택 정렬 실행...\n", null);
+                tr1.start();
                 selectionSort(array);
                 break;
             default:
@@ -56,18 +103,27 @@ class AlgorithmRunnable implements Runnable {
                 break;
         }
     }
+    
+  
+    
     // 버블 정렬 알고리즘
     private void bubbleSort(int[] array) {
         boolean swapped;
+       
         for (int i = 0; i < array.length - 1; i++) {
             swapped = false;
             for (int j = 0; j < array.length - 1 - i; j++) {
+            		sm.getredc(j);
+            		
                 if (array[j] > array[j + 1]) {
                     // array[j]와 array[j + 1]을 교환합니다.
+                	sm.getredc(j+1);
+                	
                     int temp = array[j];
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
                     swapped = true;
+                    
 
                     // 교환 후 배열을 출력하고, 0.5초 동안 대기합니다.
                     printArray(array, j, j + 1);
@@ -77,13 +133,17 @@ class AlgorithmRunnable implements Runnable {
                         Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
                     }
                 }
-            }
+            }sm.getgreenc(array.length-(i+1));
+            
 
             // 내부 루프에서 두 요소가 교환되지 않았다면 배열이 정렬된 것입니다.
             if (!swapped) {
                 break;
             }
         }
+        sm.getgreenc(0);
+        sm.getredc(-1);
+        
     }
    // 힙 정렬 알고리즘
 private void heapSort(int[] array) {
@@ -93,6 +153,7 @@ private void heapSort(int[] array) {
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(array, n, i);
     }
+    sm.getgreenc(n);
 
     // Heap sort
     for (int i = n - 1; i >= 0; i--) {
@@ -133,6 +194,7 @@ private void heapify(int[] arr, int n, int i) {
         arr[i] = arr[largest];
         arr[largest] = swap;
 
+        
         printArray(arr, i, largest);
         try {
             Thread.sleep(50);
@@ -147,6 +209,7 @@ private void heapify(int[] arr, int n, int i) {
 
    // 퀵 정렬 알고리즘
 private void quickSort(int[] array, int low, int high) {
+	sm.getgreenc(array.length-1);
     if (low < high) {
         // pi is partitioning index, array[p] is now at right place
         int pi = partition(array, low, high);
@@ -159,6 +222,7 @@ private void quickSort(int[] array, int low, int high) {
 
 private int partition(int[] array, int low, int high) {
     int pivot = array[high]; 
+    sm.getredc(array[high]);
     int i = (low - 1); // index of smaller element
     for (int j = low; j <= high - 1; j++) {
         // If current element is smaller than or equal to pivot
@@ -169,6 +233,11 @@ private int partition(int[] array, int low, int high) {
             int temp = array[i];
             array[i] = array[j];
             array[j] = temp;
+			if(i == sm.putredc()) {
+				sm.getredc(j);
+			} else if (j == sm.putredc()) {
+				sm.getredc(i);
+			}
 
             // print array after swapping and delay
             printArray(array, i, j);
@@ -178,7 +247,7 @@ private int partition(int[] array, int low, int high) {
                 Thread.currentThread().interrupt();
             }
         }
-    }
+    }sm.getgreenc(low);
 
     // swap array[i+1] and array[high] (or pivot)
     int temp = array[i + 1];
@@ -199,6 +268,8 @@ private int partition(int[] array, int low, int high) {
   // 삽입 정렬 알고리즘
 private void insertionSort(int[] array) {
     for (int i = 1; i < array.length; i++) {
+    	sm.getgreenc(i);
+    	sm.getredc(sm.putgreenc());
         int key = array[i];
         int j = i - 1;
 
@@ -206,7 +277,9 @@ private void insertionSort(int[] array) {
         greater than key, to one position ahead
         of their current position */
         while (j >= 0 && array[j] > key) {
+        	sm.getredc(j+1);
             array[j + 1] = array[j];
+            
             printArray(array, j, j + 1);
             try {
                 Thread.sleep(50);
@@ -215,6 +288,7 @@ private void insertionSort(int[] array) {
             }
             j = j - 1;
         }
+        sm.getredc(-1);
         array[j + 1] = key;
     }
 }
@@ -283,9 +357,3 @@ private void selectionSort(int[] array) {
     }
 }
 
-class EmptyRunnable implements Runnable {
-    @Override
-    public void run() {
-        // 두 번째 스레드가 비워두었던 기능을 추가할 수 있습니다.
-    }
-}
