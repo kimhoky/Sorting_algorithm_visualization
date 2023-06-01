@@ -72,6 +72,10 @@ public class EmptyRunnable implements Runnable {
 
 			// 생성된 난수 출력
 
+			int x = 0;
+			int y = 150;
+			setLocation(x, y);
+
 			add(graphPanel);
 
 			setVisible(true);
