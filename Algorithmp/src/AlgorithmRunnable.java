@@ -61,6 +61,9 @@ class AlgorithmRunnable implements Runnable {
 
     Thread tr1;
     Thread tr2;
+    Thread tr3;
+    Thread tr4;
+    Thread tr5;
     sharedmemory sm = new sharedmemory();
 
     @Override
@@ -80,8 +83,10 @@ class AlgorithmRunnable implements Runnable {
          array[j] = temp;
      }
      sm.array(array);
-     tr1 = new Thread(new EmptyRunnable(sm));
+     tr1 = new Thread(new Bubble(sm));
      tr2 = new Thread(new Heap(sm));
+     tr3 = new Thread(new Quick(sm));
+     tr4= new Thread(new Insert(sm));
 
         switch (algorithmChoice) {
             case 1:
@@ -98,13 +103,13 @@ class AlgorithmRunnable implements Runnable {
                 break;
             case 3:
                 appendText("퀵 정렬 실행...\n", null);
-                tr1.start();
+                tr3.start();
                 quickSort(array, 0, array.length - 1); // 퀵 정렬 실행
 
                 break;
             case 4:
                 appendText("삽입 정렬 실행...\n", null);
-                tr1.start();
+                tr4.start();
                 insertionSort(array);
 
                 break;
