@@ -165,6 +165,7 @@ class AlgorithmRunnable implements Runnable {
     // Build max heap
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(array, n, i);
+       
     }
     
 
@@ -175,7 +176,7 @@ class AlgorithmRunnable implements Runnable {
         array[0] = array[i];
         array[i] = temp;
         sm.getredc(i);
-
+        sm.getgreenc(i);
             printArray(array, 0, i);
             try {
                 Thread.sleep(50);
@@ -185,7 +186,7 @@ class AlgorithmRunnable implements Runnable {
 
             // Heapify root element
             heapify(array, i, 0);
-        }
+        }sm.getredc(-1);
     }
 
 // To heapify a subtree rooted with node i which is an index in arr[]
@@ -194,6 +195,7 @@ private void heapify(int[] arr, int n, int i) {
     int left = 2 * i + 1;  // left = 2*i + 1
     int right = 2 * i + 2;  // right = 2*i + 2
     sm.getcyanc(left);
+    sm.getbluec(arr[i]);
 
         // If left child is larger than root
         if (left < n && arr[left] > arr[largest])
@@ -208,7 +210,7 @@ private void heapify(int[] arr, int n, int i) {
         int swap = arr[i];
         arr[i] = arr[largest];
         arr[largest] = swap;
-        sm.getbluec(largest);
+       
 
             printArray(arr, i, largest);
             try {
@@ -219,7 +221,7 @@ private void heapify(int[] arr, int n, int i) {
 
         // Recursively heapify the affected sub-tree
         heapify(arr, n, largest);
-    }sm.getgreenc(arr[largest]);
+    }
 }
 
     // 퀵 정렬 알고리즘

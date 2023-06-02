@@ -88,9 +88,9 @@ public class Heap implements Runnable {
                 g.setColor(Color.BLACK);
                 g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);			
             }
-            for (int i = 0; i < data.length; i++) {
-                g.setColor(Color.CYAN);
-                g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() -  data[blueColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[blueColumn] * columnHeight);
+            for (int i = 1; i < data.length; i++) {
+                g.setColor(Color.WHITE);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() -  data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[i] * columnHeight);
                 g.setColor(Color.BLACK);
                 g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() -  data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[i] * columnHeight);			
             }
@@ -102,7 +102,8 @@ public class Heap implements Runnable {
                     g.setColor(Color.BLACK);
                     g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);			
                 }
-            }
+            } 
+            
             if(redColumn != -1) {
                 g.setColor(Color.RED);
                 g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn, getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[redColumn] * columnHeight);
