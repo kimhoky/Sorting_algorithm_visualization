@@ -87,6 +87,7 @@ class AlgorithmRunnable implements Runnable {
      tr2 = new Thread(new Heap(sm));
      tr3 = new Thread(new Quick(sm));
      tr4= new Thread(new Insert(sm));
+     tr5= new Thread(new Selection(sm));
 
         switch (algorithmChoice) {
             case 1:
@@ -115,7 +116,7 @@ class AlgorithmRunnable implements Runnable {
                 break;
             case 5:
                 appendText("선택 정렬 실행...\n", null);
-                tr1.start();
+                tr5.start();
                 selectionSort(array);
                 break;
             default:
@@ -333,19 +334,31 @@ private void heapify(int[] arr, int n, int i) {
 
     // 선택 정렬 알고리즘
     private void selectionSort(int[] array) {
+        int s = -1;
         for (int i = 0; i < array.length - 1; i++) {
             // Find the minimum element in unsorted array
             int minIdx = i;
-            for (int j = i + 1; j < array.length; j++)
-                if (array[j] < array[minIdx])
+            sm.getredc(minIdx);
+            for (int j = i + 1; j < array.length; j++){
+                sm.getbluec(j);
+                if (array[j] < array[minIdx]){
                     minIdx = j;
+                    sm.getredc(minIdx);
+                }
+                
+            }
+                
 
             // Swap the found minimum element with the first
             // element of the unsorted part
-            int temp = array[minIdx];
-            array[minIdx] = array[i];
-            array[i] = temp;
+            if(minIdx != i){
+                int temp = array[minIdx];
+                array[minIdx] = array[i];
+                array[i] = temp;
+            }
+           
 
+            sm.getgreenc(s++);
             printArray(array, i, minIdx);
             try {
                 Thread.sleep(50);
@@ -353,6 +366,10 @@ private void heapify(int[] arr, int n, int i) {
                 Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
         }
+        sm.getgreenc(s++);
+        sm.getgreenc(s++);
+        sm.getredc(-1);
+        sm.getbluec(-1);
     }
 
     // 배열 출력

@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 
-public class Heap implements Runnable {
+public class Selection implements Runnable {
 	private int[] data;
 	GraphPanel graphPanel = new GraphPanel();
 	int redColumn;
@@ -31,7 +31,7 @@ public class Heap implements Runnable {
     		
     		graphPanel.repaint();
     		try {
-                Thread.sleep(5);
+                Thread.sleep(8);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
@@ -39,12 +39,12 @@ public class Heap implements Runnable {
     	 
     	
     }
-    public Heap(sharedmemory sm) {
+    public Selection(sharedmemory sm) {
     	this.sm = sm;
     	data= sm.putarray();
     	redColumn =sm.putredc();
     	greenColumn=sm.putgreenc();
-        
+        blueColumn=sm.putbluec();
     }
     
     public class Graph extends JFrame {
@@ -82,34 +82,31 @@ public class Heap implements Runnable {
     		int columnHeight = (getHeight() - 4 * BORDER_WIDTH) / data.length;
 
     		
-    		
-    		for (int i = 0; i < data.length/2; i++) {
+            
+    		for (int i = (greenColumn == -1 ? 0 : greenColumn); i < data.length; i++) {
                 g.setColor(Color.WHITE);
                 g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);
                 g.setColor(Color.BLACK);
                 g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);			
             }
-            for (int i = 1; i < data.length; i++) {
-                g.setColor(Color.WHITE);
-                g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() -  data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[i] * columnHeight);
+            for (int i = 0; i <= greenColumn; i++) {
+                g.setColor(Color.GREEN);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);
                 g.setColor(Color.BLACK);
-                g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() -  data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[i] * columnHeight);			
+                g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);			
             }
-            
-            if(greenColumn != -1) {
-                for (int i = greenColumn; i < data.length; i++) {
-                    g.setColor(Color.GREEN);
-                    g.fillRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);
-                    g.setColor(Color.BLACK);
-                    g.drawRect(2 * BORDER_WIDTH + columnWidth * i, getHeight() - data[i] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[i] * columnHeight);			
-                }
-            } 
-            
+           
             if(redColumn != -1) {
                 g.setColor(Color.RED);
-                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn, getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[redColumn] * columnHeight);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn, getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[redColumn] * columnHeight);
                 g.setColor(Color.BLACK);
-                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn, getHeight() -  data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,  data[redColumn] * columnHeight);
+                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn, getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[redColumn] * columnHeight);
+            }
+            if(blueColumn != -1) {
+                g.setColor(Color.BLUE);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * blueColumn, getHeight() - data[blueColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[blueColumn] * columnHeight);
+                g.setColor(Color.BLACK);
+                g.drawRect(2 * BORDER_WIDTH + columnWidth * blueColumn, getHeight() - data[blueColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth, data[blueColumn] * columnHeight);
             }
 
         }

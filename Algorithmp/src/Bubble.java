@@ -11,6 +11,8 @@ public class Bubble implements Runnable {
 	GraphPanel graphPanel = new GraphPanel();
 	int redColumn;
 	int greenColumn;
+    int cyanColumn;
+    int blueColumn;
 	sharedmemory sm = new sharedmemory();
 
 	@Override
@@ -20,9 +22,11 @@ public class Bubble implements Runnable {
 		SwingUtilities.invokeLater(Graph::new);
 		while (true) {
 
-			redColumn = sm.putredc();
-			greenColumn = sm.putgreenc();
-			
+			redColumn =sm.putredc();
+        	greenColumn=sm.putgreenc();
+            cyanColumn=sm.putcyanc();
+            blueColumn=sm.putbluec();
+    		System.out.println(redColumn+" "+greenColumn+" "+cyanColumn+" "+blueColumn);
 			graphPanel.repaint();
 			try {
 				Thread.sleep(5);
