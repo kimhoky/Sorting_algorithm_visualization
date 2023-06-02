@@ -11,6 +11,8 @@ class sharedmemory{
 	int[] array;
 	private int redColumn=-1;
 	private int greenColumn=-1;
+    private int cyanColumn=-1;
+	private int blueColumn=-1;
 	public synchronized void array(int[] array) {
 		this.array = array;
 	}
@@ -19,6 +21,18 @@ class sharedmemory{
 	}
     public synchronized void getgreenc(int greenColumn) {
     	this.greenColumn = greenColumn;
+    }
+    public synchronized void getcyanc(int cyanColumn) {
+		this.cyanColumn = cyanColumn;
+	}
+    public synchronized void getbluec(int blueColumn) {
+    	this.blueColumn = blueColumn;
+    }
+    public synchronized int putcyanc() {
+    	return this.cyanColumn;
+    }
+    public synchronized int putbluec() {
+    	return this.blueColumn;
     }
     public synchronized int putredc() {
     	return this.redColumn;
@@ -43,7 +57,7 @@ class AlgorithmRunnable implements Runnable {
         this.textPane = textPane;
     }
     Thread tr1;
-    valueincome vi = new valueincome();
+    Thread tr2;
     sharedmemory sm = new sharedmemory();
     	
     @Override
@@ -64,7 +78,7 @@ class AlgorithmRunnable implements Runnable {
      }
      sm.array(array);
      tr1 = new Thread(new EmptyRunnable(sm));
-     
+     tr2 = new Thread(new Heap(sm));
 
         switch (algorithmChoice) {
             case 1:
@@ -76,7 +90,7 @@ class AlgorithmRunnable implements Runnable {
                 break;
             case 2:
                 appendText("힙 정렬 실행...\n", null);
-                tr1.start();
+                tr2.start();
                 heapSort(array);
                 
                 
@@ -153,7 +167,7 @@ private void heapSort(int[] array) {
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(array, n, i);
     }
-    sm.getgreenc(n);
+    
 
     // Heap sort
     for (int i = n - 1; i >= 0; i--) {
@@ -161,6 +175,7 @@ private void heapSort(int[] array) {
         int temp = array[0];
         array[0] = array[i];
         array[i] = temp;
+        sm.getredc(i);
 
         printArray(array, 0, i);
         try {
@@ -179,6 +194,7 @@ private void heapify(int[] arr, int n, int i) {
     int largest = i;  // Initialize largest as root
     int left = 2 * i + 1;  // left = 2*i + 1
     int right = 2 * i + 2;  // right = 2*i + 2
+    sm.getcyanc(left);
 
     // If left child is larger than root
     if (left < n && arr[left] > arr[largest])
@@ -193,6 +209,7 @@ private void heapify(int[] arr, int n, int i) {
         int swap = arr[i];
         arr[i] = arr[largest];
         arr[largest] = swap;
+        sm.getbluec(largest);
 
         
         printArray(arr, i, largest);
@@ -204,7 +221,7 @@ private void heapify(int[] arr, int n, int i) {
 
         // Recursively heapify the affected sub-tree
         heapify(arr, n, largest);
-    }
+    }sm.getgreenc(arr[largest]);
 }
 
    // 퀵 정렬 알고리즘
