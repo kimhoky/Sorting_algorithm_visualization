@@ -22,8 +22,7 @@ public class Bubble implements Runnable {
 
 			redColumn = sm.putredc();
 			greenColumn = sm.putgreenc();
-			System.out.println(redColumn + "+" + greenColumn);
-
+			
 			graphPanel.repaint();
 			try {
 				Thread.sleep(5);

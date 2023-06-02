@@ -291,31 +291,44 @@ private void heapify(int[] arr, int n, int i) {
     // 삽입 정렬 알고리즘
     private void insertionSort(int[] array) {
         for (int i = 1; i < array.length; i++) {
-            sm.getgreenc(i);
-            sm.getredc(sm.putgreenc());
-            int key = array[i];
-            int j = i - 1;
+            sm.getcyanc(i);
+            sm.getredc(i);
 
+            
+            int j;
             /*
              * Move elements of arr[0..i-1], that are
              * greater than key, to one position ahead
              * of their current position
              */
-            while (j >= 0 && array[j] > key) {
-                sm.getredc(j + 1);
-                array[j + 1] = array[j];
+            for (j= i - 1; j >= 0 && array[j] > array[j+1] ; j--) {
 
+                sm.getredc(j + 1);
+                int tmp = array[j+1];
+                array[j + 1] = array[j];
+                array[j]=tmp;
+              
+               
                 printArray(array, j, j + 1);
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-                j = j - 1;
-            }
-            sm.getredc(-1);
-            array[j + 1] = key;
+                
+                
+            }sm.getredc(j+1);
+            
+             
+                
+            
+            
+           
+           // array[j + 1] = key;
+            
         }
+        sm.getgreenc(array.length-1);
+        sm.getredc(-1);
     }
 
     // 선택 정렬 알고리즘
