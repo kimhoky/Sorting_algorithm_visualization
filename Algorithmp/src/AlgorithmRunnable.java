@@ -244,18 +244,27 @@ private void heapify(int[] arr, int n, int i) {
     }
 
     private int partition(int[] array, int low, int high) {
-        int pivot = array[high];
-        sm.getredc(array[high]);
-        int i = (low - 1); // index of smaller element
+        // 중간 인덱스 계산
+        int mid = low + (high - low) / 2;
+
+        // low, high, mid의 값을 가져옴
+        int pivot = array[mid];
+        int temp = array[high];
+        array[high] = array[mid];
+        array[mid] = temp;
+        sm.getredc(pivot);
+
+        int i = low - 1; // smaller element index
+
         for (int j = low; j <= high - 1; j++) {
-            // If current element is smaller than or equal to pivot
-            if (array[j] < pivot) {
+            if (array[j] <= pivot) {
                 i++;
 
                 // swap array[i] and array[j]
-                int temp = array[i];
+                temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
+
                 if (i == sm.putredc()) {
                     sm.getredc(j);
                 } else if (j == sm.putredc()) {
@@ -274,7 +283,7 @@ private void heapify(int[] arr, int n, int i) {
         sm.getgreenc(low);
 
         // swap array[i+1] and array[high] (or pivot)
-        int temp = array[i + 1];
+        temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
 
