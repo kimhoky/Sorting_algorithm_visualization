@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 
-public class EmptyRunnable implements Runnable {
+public class Bubble implements Runnable {
 	private int[] data;
 	GraphPanel graphPanel = new GraphPanel();
 	int redColumn;
@@ -34,7 +34,7 @@ public class EmptyRunnable implements Runnable {
 
 	}
 
-	public EmptyRunnable(sharedmemory sm) {
+	public Bubble(sharedmemory sm) {
 		this.sm = sm;
 		data = sm.putarray();
 		redColumn = sm.putredc();
