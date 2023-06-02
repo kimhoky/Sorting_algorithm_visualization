@@ -1,12 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
-
 public class Main {
     public static void main(String[] args) {
         // 사용자에게 알고리즘 선택을 요청합니다.
         int choice = Integer.parseInt(JOptionPane.showInputDialog(null,
-                "Select an algorithm:\n1. Bubble Sort\n2. Selection Sort\n3. Insertion Sort\n4. Quick Sort\n5. Merge Sort"));
+                "Select an algorithm:\n1. Bubble Sort\n2. Heap Sort\n3. Quick Sort\n4. Insertion Sort\n5. Selection Sort"));
 
         // JFrame을 생성합니다.
         JFrame frame = new JFrame("Algorithm Result");
@@ -33,6 +32,6 @@ public class Main {
         algorithmThread.start();
 
         // 두 번째 스레드를 시작합니다. 이 스레드는 비워두었습니다.
-      
+
     }
 }
