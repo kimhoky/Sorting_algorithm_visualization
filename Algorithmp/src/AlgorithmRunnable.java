@@ -3,10 +3,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.*;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-
-import javax.swing.JPanel;
-
 class sharedmemory{
 	int[] array;
 	private int redColumn=-1;
@@ -232,15 +228,26 @@ private void heapify(int[] arr, int n, int i) {
 
     // 퀵 정렬 알고리즘
     private void quickSort(int[] array, int low, int high) {
-        sm.getgreenc(array.length - 1);
+        
         if (low < high) {
             // pi is partitioning index, array[p] is now at right place
             int pi = partition(array, low, high);
 
+            
             // Recursively sort elements before partition and after partition
             quickSort(array, low, pi - 1);
+            if(low>sm.putgreenc()){
+                sm.getgreenc(low-1);
+            }
+            
             quickSort(array, pi + 1, high);
+           
+            
         }
+        sm.getgreenc(high-low);
+        sm.getbluec(-1);
+            sm.getcyanc(-1);
+            sm.getredc(-1);
     }
 
     private int partition(int[] array, int low, int high) {
@@ -249,25 +256,28 @@ private void heapify(int[] arr, int n, int i) {
 
         // low, high, mid의 값을 가져옴
         int pivot = array[mid];
+
         int temp = array[high];
+
         array[high] = array[mid];
         array[mid] = temp;
         sm.getredc(pivot);
 
         int i = low - 1; // smaller element index
 
-        for (int j = low; j <= high - 1; j++) {
+        for (int j = low; j <= high -1; j++) {
             if (array[j] <= pivot) {
+                
                 i++;
-
+                sm.getbluec(i);
                 // swap array[i] and array[j]
                 temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
-
-                if (i == sm.putredc()) {
+                sm.getcyanc(j);
+                if (i == pivot) {
                     sm.getredc(j);
-                } else if (j == sm.putredc()) {
+                } else if (j == pivot) {
                     sm.getredc(i);
                 }
 
@@ -280,8 +290,6 @@ private void heapify(int[] arr, int n, int i) {
                 }
             }
         }
-        sm.getgreenc(low);
-
         // swap array[i+1] and array[high] (or pivot)
         temp = array[i + 1];
         array[i + 1] = array[high];
@@ -294,8 +302,9 @@ private void heapify(int[] arr, int n, int i) {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
+      
         return (i + 1);
+        
     }
 
     // 삽입 정렬 알고리즘

@@ -84,13 +84,9 @@ public class Quick implements Runnable {
             }
             if (redColumn != -1) {
                 g.setColor(Color.RED);
-                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn,
-                        getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,
-                        data[redColumn] * columnHeight);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn,getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,data[redColumn] * columnHeight);
                 g.setColor(Color.BLACK);
-                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn,
-                        getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,
-                        data[redColumn] * columnHeight);
+                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn,getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,data[redColumn] * columnHeight);
             }
             if (blueColumn != -1) {
                 g.setColor(Color.BLUE);
