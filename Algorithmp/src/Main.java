@@ -2,13 +2,20 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+    private static JFrame frame;
+    private static Bubble.Graph graphInstance;
+
     public static void main(String[] args) {
+        showAlgorithmSelection();
+    }
+
+    private static void showAlgorithmSelection() {
         // 사용자에게 알고리즘 선택을 요청합니다.
         int choice = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Select an algorithm:\n1. Bubble Sort\n2. Heap Sort\n3. Quick Sort\n4. Insertion Sort\n5. Selection Sort"));
 
         // JFrame을 생성합니다.
-        JFrame frame = new JFrame("Algorithm Result");
+        frame = new JFrame("Algorithm Result");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 800);
         frame.setLayout(new BorderLayout());
@@ -16,7 +23,7 @@ public class Main {
         // JTextPane를 생성하고 스크롤 가능하도록 JScrollPane으로 감쌉니다.
         JTextPane textPane = new JTextPane();
         textPane.setEditable(false);
-        textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
 
         JScrollPane scrollPane = new JScrollPane(textPane);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -27,11 +34,31 @@ public class Main {
         // 프레임을 화면에 표시합니다.
         frame.setVisible(true);
 
-        // 첫 번째 스레드를 시작합니다. 이 스레드는 선택된 알고리즘을 실행합니다.
-        Thread algorithmThread = new Thread(new AlgorithmRunnable(choice, textPane));
+        // 알고리즘 실행
+        Thread algorithmThread = new Thread(() -> {
+            AlgorithmRunnable algorithmRunnable = new AlgorithmRunnable(choice, textPane);
+            algorithmRunnable.run();
+            stopGraph();
+        });
         algorithmThread.start();
 
-        // 두 번째 스레드를 시작합니다. 이 스레드는 비워두었습니다.
+        // 알고리즘 실행이 끝난 후에 선택 창으로 돌아가는 버튼을 생성합니다.
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> {
+            frame.setVisible(false); // 현재 프레임을 숨깁니다.
+            frame.dispose(); // 현재 프레임을 파괴합니다.
+            stopGraph(); // 그래프를 정지하고 닫습니다.
+            showAlgorithmSelection(); // 알고리즘 선택 창을 다시 표시합니다.
+        });
 
+        // 프레임에 선택 창으로 돌아가는 버튼을 추가합니다.
+        frame.add(backButton, BorderLayout.SOUTH);
+    }
+
+    private static void stopGraph() {
+        if (graphInstance != null) {
+            graphInstance.dispose(); // 그래프 창을 닫습니다.
+            graphInstance = null;
+        }
     }
 }
