@@ -13,35 +13,67 @@ public class Bubble implements Runnable {
 	int greenColumn;
     int cyanColumn;
     int blueColumn;
+	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
+	runvalcheck rc = new runvalcheck();
+	
+
+	public void stopThread(){
+		runval = false;
+	}
 
 	@Override
 	public void run() {
 		// 비워두었습니다.
 
-		SwingUtilities.invokeLater(Graph::new);
-		while (true) {
-
+		
+		Graph graph = new Graph();
+		
+		
+		
+		//runvalcheck rc = new runvalcheck();
+		//runval = sm.putrunval();
+		//runval = rc.putrunval();
+		while (runval) {
+			
+			
+			runval=sm.putrunval();
+			if(!runval){
+				graph.setVisible(runval);
+				graph.dispose();
+				
+				break;
+			}
 			redColumn =sm.putredc();
         	greenColumn=sm.putgreenc();
             cyanColumn=sm.putcyanc();
             blueColumn=sm.putbluec();
-    		System.out.println(redColumn+" "+greenColumn+" "+cyanColumn+" "+blueColumn);
+    		System.out.println(redColumn+" "+greenColumn+" "+cyanColumn+" "+blueColumn+" "+runval);
 			graphPanel.repaint();
+			
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
 			}
 		}
-
+		// graph.setVisible(false);
+		// graph.dispose();
+		
+		
+		
+		
 	}
+	
 
 	public Bubble(sharedmemory sm) {
 		this.sm = sm;
 		data = sm.putarray();
 		redColumn = sm.putredc();
 		greenColumn = sm.putgreenc();
+	}
+	public Bubble(runvalcheck rc){
+		this.rc = rc;
 	}
 
 	public class Graph extends JFrame {
@@ -61,8 +93,12 @@ public class Bubble implements Runnable {
 
 			add(graphPanel);
 
-			setVisible(true);
+			setVisible(runval);
+			if(!runval){
+				dispose();
+			}
 		}
+		
 
 	}
 

@@ -4,11 +4,13 @@ import javax.swing.text.*;
 
 import java.awt.*;
 class sharedmemory{
+    runvalcheck rc = new runvalcheck();
 	int[] array;
 	private int redColumn=-1;
 	private int greenColumn=-1;
     private int cyanColumn=-1;
 	private int blueColumn=-1;
+    private boolean runval =rc.putrunval();
 	public synchronized void array(int[] array) {
 		this.array = array;
 	}
@@ -23,6 +25,9 @@ class sharedmemory{
 	}
     public synchronized void getbluec(int blueColumn) {
     	this.blueColumn = blueColumn;
+    }
+    public synchronized void getrunval(boolean runval) {
+    	this.runval = runval;
     }
     public synchronized int putcyanc() {
     	return this.cyanColumn;
@@ -41,7 +46,18 @@ class sharedmemory{
     public synchronized int[] putarray() {
         return this.array;
     }
+    public synchronized boolean putrunval() {
+        return this.runval;
+    }
 
+    private volatile boolean frameVisible = true;
+
+	public synchronized void setFrameVisible(boolean visible){
+		frameVisible = visible;
+	}
+    public synchronized boolean putFrameVisible(){
+        return this.frameVisible;
+    }
 }
 
 class AlgorithmRunnable implements Runnable {
@@ -53,6 +69,7 @@ class AlgorithmRunnable implements Runnable {
     AlgorithmRunnable(int algorithmChoice, JTextPane textPane) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
+       
     }
 
     Thread tr1;
@@ -61,7 +78,7 @@ class AlgorithmRunnable implements Runnable {
     Thread tr4;
     Thread tr5;
     sharedmemory sm = new sharedmemory();
-
+    runvalcheck rc = new runvalcheck();
     @Override
     public void run() {
     	
@@ -78,13 +95,14 @@ class AlgorithmRunnable implements Runnable {
          array[i] = array[j];
          array[j] = temp;
      }
+
      sm.array(array);
      tr1 = new Thread(new Bubble(sm));
      tr2 = new Thread(new Heap(sm));
      tr3 = new Thread(new Quick(sm));
      tr4= new Thread(new Insert(sm));
      tr5= new Thread(new Selection(sm));
-
+    // sm.getrunval(true);
         switch (algorithmChoice) {
             case 1:
                 appendText("버블 정렬 실행...\n", null);
@@ -119,6 +137,15 @@ class AlgorithmRunnable implements Runnable {
                 appendText("잘못된 선택.\n", null);
                 break;
         }
+        while(true){
+            try {
+                Thread.sleep(5);
+               
+            } catch (InterruptedException e) {
+                sm.getrunval(false);
+                Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
+            }
+        }
     }
 
     // 버블 정렬 알고리즘
@@ -143,7 +170,9 @@ class AlgorithmRunnable implements Runnable {
                     printArray(array, j, j + 1);
                     try {
                         Thread.sleep(5);
+                       
                     } catch (InterruptedException e) {
+                        sm.getrunval(false);
                         Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
                     }
                 }
@@ -183,6 +212,7 @@ class AlgorithmRunnable implements Runnable {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
+                sm.getrunval(false);
                 Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
 
@@ -218,6 +248,7 @@ private void heapify(int[] arr, int n, int i) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
+                sm.getrunval(false);
                 Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
 
@@ -286,6 +317,7 @@ private void heapify(int[] arr, int n, int i) {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
+                    sm.getrunval(false);
                     Thread.currentThread().interrupt();
                 }
             }
@@ -332,6 +364,7 @@ private void heapify(int[] arr, int n, int i) {
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
+                    sm.getrunval(false);
                     Thread.currentThread().interrupt();
                 }
                 
@@ -381,6 +414,7 @@ private void heapify(int[] arr, int n, int i) {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
+                sm.getrunval(false);
                 Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
         }

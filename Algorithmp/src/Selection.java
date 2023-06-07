@@ -14,15 +14,25 @@ public class Selection implements Runnable {
 	int greenColumn;
     int cyanColumn;
     int blueColumn;
+	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
+	runvalcheck rc = new runvalcheck();
 	
     @Override
     public void run() {
         // 비워두었습니다.
     	
-    	 SwingUtilities.invokeLater(Graph::new);
-    	while(true) {
-    		
+    	Graph graph = new Graph();
+         while (runval) {
+			
+			
+			runval=sm.putrunval();
+			if(!runval){
+				graph.setVisible(runval);
+				graph.dispose();
+				
+				break;
+			}
     		redColumn =sm.putredc();
         	greenColumn=sm.putgreenc();
             cyanColumn=sm.putcyanc();

@@ -1,19 +1,38 @@
 import javax.swing.*;
 import java.awt.*;
 
+class runvalcheck{
+       private volatile boolean runval = true;
+        public  void getrunval(boolean runval){
+            this.runval = runval;
+        }
+        public boolean putrunval(){
+            return this.runval;
+        }
+}
 public class Main {
     private static JFrame frame;
-    private static Bubble.Graph graphInstance;
-
+    
     public static void main(String[] args) {
+        
         showAlgorithmSelection();
     }
 
     private static void showAlgorithmSelection() {
+        runvalcheck rc = new runvalcheck();
+        sharedmemory sm = new sharedmemory();
+        Bubble bu = new Bubble(rc);
+        Thread tr1 = new Thread(bu);
+        Thread tr2 = new Thread(new Heap(sm));
+        Thread tr3 = new Thread(new Quick(sm));
+        Thread tr4= new Thread(new Insert(sm));
+        Thread tr5= new Thread(new Selection(sm));
         // 사용자에게 알고리즘 선택을 요청합니다.
         int choice = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Select an algorithm:\n1. Bubble Sort\n2. Heap Sort\n3. Quick Sort\n4. Insertion Sort\n5. Selection Sort"));
-
+        
+        
+        
         // JFrame을 생성합니다.
         frame = new JFrame("Algorithm Result");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,21 +52,33 @@ public class Main {
 
         // 프레임을 화면에 표시합니다.
         frame.setVisible(true);
-
+        
+        
+          
+         
+         
+      
         // 알고리즘 실행
+       
         Thread algorithmThread = new Thread(() -> {
+            rc.getrunval(true);
             AlgorithmRunnable algorithmRunnable = new AlgorithmRunnable(choice, textPane);
             algorithmRunnable.run();
-            stopGraph();
+            
         });
         algorithmThread.start();
-
+        
+        
         // 알고리즘 실행이 끝난 후에 선택 창으로 돌아가는 버튼을 생성합니다.
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
+           algorithmThread.interrupt();
+            bu.stopThread();
+            rc.getrunval(false);
+            tr1.interrupt();
+            
             frame.setVisible(false); // 현재 프레임을 숨깁니다.
             frame.dispose(); // 현재 프레임을 파괴합니다.
-            stopGraph(); // 그래프를 정지하고 닫습니다.
             showAlgorithmSelection(); // 알고리즘 선택 창을 다시 표시합니다.
         });
 
@@ -55,10 +86,5 @@ public class Main {
         frame.add(backButton, BorderLayout.SOUTH);
     }
 
-    private static void stopGraph() {
-        if (graphInstance != null) {
-            graphInstance.dispose(); // 그래프 창을 닫습니다.
-            graphInstance = null;
-        }
-    }
+   
 }
