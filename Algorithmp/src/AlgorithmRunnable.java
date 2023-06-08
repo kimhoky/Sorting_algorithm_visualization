@@ -4,13 +4,13 @@ import javax.swing.text.*;
 
 import java.awt.*;
 class sharedmemory{
-    runvalcheck rc = new runvalcheck();
+   
 	int[] array;
 	private int redColumn=-1;
 	private int greenColumn=-1;
     private int cyanColumn=-1;
 	private int blueColumn=-1;
-    private boolean runval =rc.putrunval();
+    private boolean runval =true;
 	public synchronized void array(int[] array) {
 		this.array = array;
 	}
@@ -49,16 +49,8 @@ class sharedmemory{
     public synchronized boolean putrunval() {
         return this.runval;
     }
-
-    private volatile boolean frameVisible = true;
-
-	public synchronized void setFrameVisible(boolean visible){
-		frameVisible = visible;
-	}
-    public synchronized boolean putFrameVisible(){
-        return this.frameVisible;
-    }
 }
+
 
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
@@ -78,7 +70,7 @@ class AlgorithmRunnable implements Runnable {
     Thread tr4;
     Thread tr5;
     sharedmemory sm = new sharedmemory();
-    runvalcheck rc = new runvalcheck();
+    
     @Override
     public void run() {
     	

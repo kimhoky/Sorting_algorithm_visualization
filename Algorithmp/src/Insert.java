@@ -16,7 +16,7 @@ public class Insert implements Runnable {
     int blueColumn;
 	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
-	runvalcheck rc = new runvalcheck();
+	
 	
     @Override
     public void run() {

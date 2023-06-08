@@ -15,7 +15,7 @@ public class Bubble implements Runnable {
     int blueColumn;
 	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
-	runvalcheck rc = new runvalcheck();
+	
 	
 
 	public void stopThread(){
@@ -29,11 +29,6 @@ public class Bubble implements Runnable {
 		
 		Graph graph = new Graph();
 		
-		
-		
-		//runvalcheck rc = new runvalcheck();
-		//runval = sm.putrunval();
-		//runval = rc.putrunval();
 		while (runval) {
 			
 			
@@ -57,11 +52,6 @@ public class Bubble implements Runnable {
 				Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
 			}
 		}
-		// graph.setVisible(false);
-		// graph.dispose();
-		
-		
-		
 		
 	}
 	

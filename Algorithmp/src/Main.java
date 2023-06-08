@@ -1,15 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class runvalcheck{
-       private volatile boolean runval = true;
-        public  void getrunval(boolean runval){
-            this.runval = runval;
-        }
-        public boolean putrunval(){
-            return this.runval;
-        }
-}
+
 public class Main {
     private static JFrame frame;
     
@@ -19,14 +11,7 @@ public class Main {
     }
 
     private static void showAlgorithmSelection() {
-        runvalcheck rc = new runvalcheck();
-        sharedmemory sm = new sharedmemory();
-        Bubble bu = new Bubble(rc);
-        Thread tr1 = new Thread(bu);
-        Thread tr2 = new Thread(new Heap(sm));
-        Thread tr3 = new Thread(new Quick(sm));
-        Thread tr4= new Thread(new Insert(sm));
-        Thread tr5= new Thread(new Selection(sm));
+        
         // 사용자에게 알고리즘 선택을 요청합니다.
         int choice = Integer.parseInt(JOptionPane.showInputDialog(null,
                 "Select an algorithm:\n1. Bubble Sort\n2. Heap Sort\n3. Quick Sort\n4. Insertion Sort\n5. Selection Sort"));
@@ -61,7 +46,7 @@ public class Main {
         // 알고리즘 실행
        
         Thread algorithmThread = new Thread(() -> {
-            rc.getrunval(true);
+            
             AlgorithmRunnable algorithmRunnable = new AlgorithmRunnable(choice, textPane);
             algorithmRunnable.run();
             
@@ -73,9 +58,9 @@ public class Main {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
            algorithmThread.interrupt();
-            bu.stopThread();
-            rc.getrunval(false);
-            tr1.interrupt();
+           
+            
+           
             
             frame.setVisible(false); // 현재 프레임을 숨깁니다.
             frame.dispose(); // 현재 프레임을 파괴합니다.
