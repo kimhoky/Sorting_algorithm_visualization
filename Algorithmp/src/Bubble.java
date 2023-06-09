@@ -13,7 +13,9 @@ public class Bubble implements Runnable {
 	int greenColumn;
     int cyanColumn;
     int blueColumn;
+	int allgo=0;
 	boolean runval = true;
+	
 	sharedmemory sm = new sharedmemory();
 	
 	
@@ -25,10 +27,13 @@ public class Bubble implements Runnable {
 	@Override
 	public void run() {
 		// 비워두었습니다.
-
-		
+		data= sm.putarray();
+		allgo=sm.putallgo();
 		Graph graph = new Graph();
 		
+		
+		
+
 		while (runval) {
 			
 			
@@ -62,24 +67,35 @@ public class Bubble implements Runnable {
 		redColumn = sm.putredc();
 		greenColumn = sm.putgreenc();
 	}
-	public Bubble(runvalcheck rc){
-		this.rc = rc;
-	}
+	
 
 	public class Graph extends JFrame {
+		
+		
 
 		public Graph() {
+			
+			
+
+			if(allgo==1){
+				setSize(sm.putsizex(), 500);
+				setLocation(0,0);
+	
+			}else{
+				setSize(800, 500);
+				int x = sm.putblocx();
+				int y = sm.putblocy();
+				setLocation(x, y);
+			}
 			setTitle("Graph Example");
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			setSize(800, 500);
+			
 
 			// 데이터 생성
 
 			// 생성된 난수 출력
 
-			int x = 0;
-			int y = 150;
-			setLocation(x, y);
+			
 
 			add(graphPanel);
 
@@ -98,7 +114,7 @@ public class Bubble implements Runnable {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			int BORDER_WIDTH = 10;
-			int columnWidth = (getWidth() - 4 * BORDER_WIDTH) / data.length;
+			int columnWidth = (getWidth() - 2 * BORDER_WIDTH) / data.length;
 			int columnHeight = (getHeight() - 4 * BORDER_WIDTH) / data.length;
 
     		

@@ -1,4 +1,6 @@
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+
 import javax.swing.JTextPane;
 import javax.swing.text.*;
 
@@ -11,6 +13,11 @@ class sharedmemory{
     private int cyanColumn=-1;
 	private int blueColumn=-1;
     private boolean runval =true;
+    private int bubblelocx = 900;
+    private int bubblelocy = 300;
+    private int sizex = 640;
+    
+    private int allgo = 0;
 	public synchronized void array(int[] array) {
 		this.array = array;
 	}
@@ -29,6 +36,15 @@ class sharedmemory{
     public synchronized void getrunval(boolean runval) {
     	this.runval = runval;
     }
+    public synchronized void getallgo(int allgo) {
+    	this.allgo = allgo;
+    }
+    public synchronized int putallgo() {
+    	return this.allgo;
+    }
+    public synchronized int putsizex() {
+    	return this.sizex;
+    }
     public synchronized int putcyanc() {
     	return this.cyanColumn;
     }
@@ -41,6 +57,12 @@ class sharedmemory{
 
     public synchronized int putgreenc() {
         return this.greenColumn;
+    }
+    public synchronized int putblocx() {
+        return this.bubblelocx;
+    }
+    public synchronized int putblocy() {
+        return this.bubblelocy;
     }
 
     public synchronized int[] putarray() {
@@ -55,12 +77,20 @@ class sharedmemory{
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
     private JTextPane textPane;
+    int [] array;
+    int j=1;
+    int [] bubblearray = new int[100];
+    int [] heaparray= new int[100];
+    int [] quikarray= new int[100];
+    int [] insertarray= new int[100];
+    int [] selectionarray= new int[100];
 
 
     // 생성자: 알고리즘 선택과 JTextPane를 받아서 초기화합니다.
-    AlgorithmRunnable(int algorithmChoice, JTextPane textPane) {
+    AlgorithmRunnable(int algorithmChoice, JTextPane textPane, int allgo) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
+        sm.getallgo(allgo);
        
     }
 
@@ -70,11 +100,8 @@ class AlgorithmRunnable implements Runnable {
     Thread tr4;
     Thread tr5;
     sharedmemory sm = new sharedmemory();
-    
-    @Override
-    public void run() {
-    	
-   	 int[] array = new int[100];
+    public int[] randomnum(){
+        array = new int[100];
      for (int i = 0; i < array.length; i++) {
          array[i] = i + 1;
      }
@@ -87,8 +114,19 @@ class AlgorithmRunnable implements Runnable {
          array[i] = array[j];
          array[j] = temp;
      }
-
-     sm.array(array);
+     return array;
+    }
+    
+    @Override
+    public void run() {
+    bubblearray = randomnum();
+    heaparray = randomnum();
+    quikarray = randomnum();
+    insertarray= randomnum();
+    selectionarray = randomnum();
+   	
+    j = 1;
+     
      tr1 = new Thread(new Bubble(sm));
      tr2 = new Thread(new Heap(sm));
      tr3 = new Thread(new Quick(sm));
@@ -98,33 +136,40 @@ class AlgorithmRunnable implements Runnable {
         switch (algorithmChoice) {
             case 1:
                 appendText("버블 정렬 실행...\n", null);
+                sm.array(bubblearray);
                 tr1.start();
-                bubbleSort(array);
+                bubbleSort(bubblearray);
 
                 break;
             case 2:
                 appendText("힙 정렬 실행...\n", null);
+                sm.array(heaparray);
                 tr2.start();
-                heapSort(array);
+                heapSort(heaparray);
 
                 break;
             case 3:
                 appendText("퀵 정렬 실행...\n", null);
+                sm.array(quikarray);
                 tr3.start();
-                quickSort(array, 0, array.length - 1); // 퀵 정렬 실행
+                quickSort(quikarray, 0, quikarray.length - 1); // 퀵 정렬 실행
 
                 break;
             case 4:
                 appendText("삽입 정렬 실행...\n", null);
+                sm.array(insertarray);
                 tr4.start();
-                insertionSort(array);
+                insertionSort(insertarray);
 
                 break;
             case 5:
                 appendText("선택 정렬 실행...\n", null);
+                sm.array(selectionarray);
                 tr5.start();
-                selectionSort(array);
+                selectionSort(selectionarray);
                 break;
+           
+               
             default:
                 appendText("잘못된 선택.\n", null);
                 break;
@@ -139,11 +184,11 @@ class AlgorithmRunnable implements Runnable {
             }
         }
     }
-
+    
     // 버블 정렬 알고리즘
     private void bubbleSort(int[] array) {
         boolean swapped;
-
+      
         for (int i = 0; i < array.length - 1; i++) {
             swapped = false;
             for (int j = 0; j < array.length - 1 - i; j++) {
@@ -157,9 +202,11 @@ class AlgorithmRunnable implements Runnable {
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
                     swapped = true;
-
+                    if(algorithmChoice!=6){
+                        printArray(array, j, j + 1);
+                    }
                     // 교환 후 배열을 출력하고, 0.5초 동안 대기합니다.
-                    printArray(array, j, j + 1);
+                    
                     try {
                         Thread.sleep(5);
                        
@@ -184,7 +231,8 @@ class AlgorithmRunnable implements Runnable {
     // 힙 정렬 알고리즘
     private void heapSort(int[] array) {
         int n = array.length;
-
+     
+        randomnum();
     // Build max heap
     for (int i = n / 2 - 1; i >= 0; i--) {
         heapify(array, n, i);
@@ -200,7 +248,11 @@ class AlgorithmRunnable implements Runnable {
         array[i] = temp;
         sm.getredc(i);
         sm.getgreenc(i);
+
+        if(algorithmChoice!=6){
             printArray(array, 0, i);
+        }
+            
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -235,8 +287,10 @@ private void heapify(int[] arr, int n, int i) {
         arr[i] = arr[largest];
         arr[largest] = swap;
        
-
+        if(algorithmChoice!=6){
             printArray(arr, i, largest);
+        }
+            
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -252,6 +306,7 @@ private void heapify(int[] arr, int n, int i) {
     // 퀵 정렬 알고리즘
     private void quickSort(int[] array, int low, int high) {
         
+      
         if (low < high) {
             // pi is partitioning index, array[p] is now at right place
             int pi = partition(array, low, high);
@@ -303,9 +358,11 @@ private void heapify(int[] arr, int n, int i) {
                 } else if (j == pivot) {
                     sm.getredc(i);
                 }
-
+                if(algorithmChoice!=6){
+                    printArray(array, i, j);
+                }
                 // print array after swapping and delay
-                printArray(array, i, j);
+                
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
@@ -318,9 +375,11 @@ private void heapify(int[] arr, int n, int i) {
         temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
-
+        if(algorithmChoice!=6){
+            printArray(array, i + 1, high);
+        }
         // print array after swapping and delay
-        printArray(array, i + 1, high);
+        
         try {
             Thread.sleep(50);
         } catch (InterruptedException e) {
@@ -333,6 +392,8 @@ private void heapify(int[] arr, int n, int i) {
 
     // 삽입 정렬 알고리즘
     private void insertionSort(int[] array) {
+      
+      
         for (int i = 1; i < array.length; i++) {
             sm.getcyanc(i);
             sm.getredc(i);
@@ -350,9 +411,12 @@ private void heapify(int[] arr, int n, int i) {
                 int tmp = array[j+1];
                 array[j + 1] = array[j];
                 array[j]=tmp;
-              
+
+                if(algorithmChoice!=6){
+                    printArray(array, j, j + 1);
+                }
                
-                printArray(array, j, j + 1);
+                
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
@@ -377,6 +441,7 @@ private void heapify(int[] arr, int n, int i) {
 
     // 선택 정렬 알고리즘
     private void selectionSort(int[] array) {
+        
         int s = -1;
         for (int i = 0; i < array.length - 1; i++) {
             // Find the minimum element in unsorted array
@@ -402,7 +467,10 @@ private void heapify(int[] arr, int n, int i) {
            
 
             sm.getgreenc(s++);
-            printArray(array, i, minIdx);
+            if(algorithmChoice!=6){
+                printArray(array, i, minIdx);
+            }
+            
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

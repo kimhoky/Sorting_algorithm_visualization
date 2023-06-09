@@ -14,6 +14,7 @@ public class Insert implements Runnable {
 	int greenColumn;
     int cyanColumn;
     int blueColumn;
+    int allgo;
 	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
 	
@@ -21,7 +22,8 @@ public class Insert implements Runnable {
     @Override
     public void run() {
         // 비워두었습니다.
-    	
+    	data= sm.putarray();
+        allgo = sm.putallgo();
     	Graph graph = new Graph();
          while (runval) {
 			
@@ -59,9 +61,19 @@ public class Insert implements Runnable {
     public class Graph extends JFrame {
     	 
     public Graph() {
+        if(allgo==1){
+            setSize(800, 500);
+            setLocation(150,500);
+
+        }else{
+            setSize(800, 500);
+            int x = sm.putblocx();
+            int y = sm.putblocy();
+            setLocation(x, y);
+        }
         setTitle("Graph Example");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 500);
+        
 
         add(graphPanel);
 

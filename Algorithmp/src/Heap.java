@@ -14,6 +14,7 @@ public class Heap implements Runnable {
 	int greenColumn;
     int cyanColumn;
     int blueColumn;
+    int allgo;
 	boolean runval = true;
 	sharedmemory sm = new sharedmemory();
 	
@@ -21,7 +22,8 @@ public class Heap implements Runnable {
     @Override
     public void run() {
         // 비워두었습니다.
-    	
+    	data= sm.putarray();
+        allgo=sm.putallgo();
         Graph graph = new Graph();
          while (runval) {
 			
@@ -60,12 +62,23 @@ public class Heap implements Runnable {
     public class Graph extends JFrame {
     	 
     public Graph() {
+        if(allgo==1){
+            setSize(sm.putsizex(), 500);
+            setLocation(630,0);
+
+        }else{
+            setSize(800, 500);
+            int x = sm.putblocx();
+            int y = sm.putblocy();
+            setLocation(x, y);
+        }
         setTitle("Graph Example");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 500);
+        
 
         // 데이터 생성
         
+
         
         // 생성된 난수 출력
          
@@ -88,7 +101,7 @@ public class Heap implements Runnable {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             int BORDER_WIDTH = 10;
-            int columnWidth = (getWidth() - 4 * BORDER_WIDTH) / data.length;
+            int columnWidth = (getWidth() - 2 * BORDER_WIDTH) / data.length;
     		int columnHeight = (getHeight() - 4 * BORDER_WIDTH) / data.length;
 
     		

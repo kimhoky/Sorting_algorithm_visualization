@@ -12,13 +12,15 @@ public class Quick implements Runnable {
     int greenColumn;
     int cyanColumn;
     int blueColumn;
+    int allgo=0;
     boolean runval = true;
 	sharedmemory sm = new sharedmemory();
 	
 
     @Override
     public void run() {
-
+        data= sm.putarray();
+        allgo=sm.putallgo();
         Graph graph = new Graph();
         while (runval) {
 			
@@ -56,10 +58,19 @@ public class Quick implements Runnable {
     public class Graph extends JFrame {
 
         public Graph() {
+            if(allgo==1){
+                setSize(sm.putsizex(), 500);
+                setLocation(1270,0);
+    
+            }else{
+                setSize(800, 500);
+                int x = sm.putblocx();
+                int y = sm.putblocy();
+                setLocation(x, y);
+            }
             setTitle("Graph Example");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(800, 500);
-
+            
             add(graphPanel);
 
             setVisible(true);
@@ -74,7 +85,7 @@ public class Quick implements Runnable {
             super.paintComponent(g);
             int BORDER_WIDTH = 10;
 
-            int columnWidth = (getWidth() - 4 * BORDER_WIDTH) / data.length;
+            int columnWidth = (getWidth() - 2 * BORDER_WIDTH) / data.length;
             int columnHeight = (getHeight() - 4 * BORDER_WIDTH) / data.length;
             for (int i = (greenColumn == -1 ? 0 : greenColumn); i < data.length; i++) {
                 g.setColor(Color.WHITE);
