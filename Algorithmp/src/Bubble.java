@@ -87,7 +87,7 @@ public class Bubble implements Runnable {
 				int y = sm.putblocy();
 				setLocation(x, y);
 			}
-			setTitle("Graph Example");
+			setTitle("Bubble Graph");
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 

@@ -72,7 +72,7 @@ public class Selection implements Runnable {
             int y = sm.putblocy();
             setLocation(x, y);
         }
-        setTitle("Graph Example");
+        setTitle("Selection Graph");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 

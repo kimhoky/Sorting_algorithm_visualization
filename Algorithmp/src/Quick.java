@@ -68,7 +68,7 @@ public class Quick implements Runnable {
                 int y = sm.putblocy();
                 setLocation(x, y);
             }
-            setTitle("Graph Example");
+            setTitle("Quik Graph");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             add(graphPanel);
