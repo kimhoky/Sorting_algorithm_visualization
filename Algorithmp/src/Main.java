@@ -44,8 +44,10 @@ public class Main {
             Thread bubbleThread = new Thread(() -> {
 
                 AlgorithmRunnable algorithmRunnable = new AlgorithmRunnable(1, textPane, 1);
+                
                 algorithmRunnable.run();
 
+                
             });
             bubbleThread.start();
 
@@ -80,7 +82,6 @@ public class Main {
 
             });
             SelectionThread.start();
-
         }
 
         Thread algorithmThread = new Thread(() -> {
@@ -100,6 +101,33 @@ public class Main {
             frame.dispose(); // 현재 프레임을 파괴합니다.
             showAlgorithmSelection(); // 알고리즘 선택 창을 다시 표시합니다.
         });
+        JLabel label = new JLabel("");
+        Font font = new Font("Serif", Font.BOLD, 25);
+        label.setFont(font);
+
+        if(choice!=6) {
+            switch (choice) {
+                case 1 : label.setText("Bubble Sort");
+                frame.add(label, BorderLayout.NORTH);
+                break;
+
+                case 2 : label.setText("Heap Sort");
+                frame.add(label, BorderLayout.NORTH);
+                break;
+
+                case 3 : label.setText("Quick Sort");
+                frame.add(label, BorderLayout.NORTH);
+                break;
+
+                case 4 : label.setText("Insertion Sort");
+                frame.add(label, BorderLayout.NORTH);
+                break;
+
+                case 5 : label.setText("Selection Sort");
+                frame.add(label, BorderLayout.NORTH);
+                break;                        
+            }
+        }
 
         // 프레임에 선택 창으로 돌아가는 버튼을 추가합니다.
         frame.add(backButton, BorderLayout.SOUTH);

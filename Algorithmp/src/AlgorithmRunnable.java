@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
+import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.text.*;
 
@@ -111,8 +112,8 @@ class AlgorithmRunnable implements Runnable {
     AlgorithmRunnable(int algorithmChoice, JTextPane textPane, int allgo) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
+        
         sm.getallgo(allgo);
-
     }
 
     Thread tr1;

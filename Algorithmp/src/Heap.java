@@ -1,7 +1,10 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -76,6 +79,12 @@ public class Heap implements Runnable {
             // 생성된 난수 출력
 
             add(graphPanel);
+
+            JLabel label = new JLabel("Heap Sort");
+            Font font = new Font("Serif", Font.BOLD, 25);
+            label.setFont(font);
+            graphPanel.setLayout(new BorderLayout());
+            graphPanel.add(label, BorderLayout.NORTH);
 
             setVisible(true);
         }
