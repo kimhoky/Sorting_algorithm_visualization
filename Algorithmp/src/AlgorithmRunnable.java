@@ -5,6 +5,13 @@ import javax.swing.JTextPane;
 import javax.swing.text.*;
 
 import java.awt.*;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 class sharedmemory{
    
 	int[] array;
@@ -184,11 +191,23 @@ class AlgorithmRunnable implements Runnable {
             }
         }
     }
+    //사운드
+    private void playSound(String filePath) {
+    try {
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource(filePath));
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInputStream);
+        clip.start();
+    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        e.printStackTrace();
+    }
+}
     
     // 버블 정렬 알고리즘
     private void bubbleSort(int[] array) {
         boolean swapped;
-      
+        playSound("START.WAV"); //버블 시작
+
         for (int i = 0; i < array.length - 1; i++) {
             swapped = false;
             for (int j = 0; j < array.length - 1 - i; j++) {
@@ -215,6 +234,7 @@ class AlgorithmRunnable implements Runnable {
                         Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
                     }
                 }
+                 
             }
             sm.getgreenc(array.length - (i + 1));
 
@@ -222,16 +242,17 @@ class AlgorithmRunnable implements Runnable {
             if (!swapped) {
                 break;
             }
+             
         }
         sm.getgreenc(0);
         sm.getredc(-1);
-
+  playSound("START.WAV");   //버블 끝
     }
 
     // 힙 정렬 알고리즘
     private void heapSort(int[] array) {
         int n = array.length;
-     
+        playSound("START.WAV"); //힙 스타트
         randomnum();
     // Build max heap
     for (int i = n / 2 - 1; i >= 0; i--) {
@@ -263,6 +284,7 @@ class AlgorithmRunnable implements Runnable {
             // Heapify root element
             heapify(array, i, 0);
         }sm.getredc(-1);
+           playSound("START.WAV");  //힙 끝
     }
 
 // To heapify a subtree rooted with node i which is an index in arr[]
@@ -301,12 +323,18 @@ private void heapify(int[] arr, int n, int i) {
         // Recursively heapify the affected sub-tree
         heapify(arr, n, largest);
     }
+     
 }
+/*public void startQuickSort(int[] array) {
+    playSound("START.WAV");
+    quickSort(array, 0, array.length - 1);
+    playSound("START.WAV");
+}        시도해봤는데 안된다.*/
 
     // 퀵 정렬 알고리즘
     private void quickSort(int[] array, int low, int high) {
         
-      
+       
         if (low < high) {
             // pi is partitioning index, array[p] is now at right place
             int pi = partition(array, low, high);
@@ -392,7 +420,7 @@ private void heapify(int[] arr, int n, int i) {
 
     // 삽입 정렬 알고리즘
     private void insertionSort(int[] array) {
-      
+        playSound("START.WAV"); //삽입시작
       
         for (int i = 1; i < array.length; i++) {
             sm.getcyanc(i);
@@ -437,10 +465,12 @@ private void heapify(int[] arr, int n, int i) {
         }
         sm.getgreenc(array.length-1);
         sm.getredc(-1);
+          playSound("START.WAV");//삽입 끝
     }
 
     // 선택 정렬 알고리즘
     private void selectionSort(int[] array) {
+          playSound("START.WAV");
         
         int s = -1;
         for (int i = 0; i < array.length - 1; i++) {
@@ -482,6 +512,7 @@ private void heapify(int[] arr, int n, int i) {
         sm.getgreenc(s++);
         sm.getredc(-1);
         sm.getbluec(-1);
+          playSound("START.WAV");
     }
 
     // 배열 출력
@@ -509,6 +540,7 @@ private void heapify(int[] arr, int n, int i) {
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
+       
     }
 
     // JTextPane에 텍스트를 추가합니다.
