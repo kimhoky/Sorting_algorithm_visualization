@@ -18,8 +18,8 @@ public class Main {
         // JFrame을 생성합니다.
         frame = new JFrame("Algorithm Result");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 800);
-        frame.setLocation(100, 150);
+        frame.setSize(800, 500);
+        frame.setLocation(100, 300);
         frame.setLayout(new BorderLayout());
 
         // JTextPane를 생성하고 스크롤 가능하도록 JScrollPane으로 감쌉니다.
