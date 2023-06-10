@@ -71,7 +71,7 @@ public class Insert implements Runnable {
             int y = sm.putblocy();
             setLocation(x, y);
         }
-        setTitle("Insert Graph");
+        setTitle("Insert Sort Graph");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 

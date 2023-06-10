@@ -72,7 +72,7 @@ public class Heap implements Runnable {
             int y = sm.putblocy();
             setLocation(x, y);
         }
-        setTitle("Heap Graph");
+        setTitle("Heap Sort Graph");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 
