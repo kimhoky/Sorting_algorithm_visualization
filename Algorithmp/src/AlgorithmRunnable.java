@@ -175,7 +175,7 @@ class AlgorithmRunnable implements Runnable {
                 playSound("START.WAV");
                 sm.array(quickarray);
                 tr3.start();
-                
+
                 quickSort(quickarray, 0, quickarray.length - 1); // 퀵 정렬 실행
 
                 break;
@@ -301,7 +301,7 @@ class AlgorithmRunnable implements Runnable {
             heapify(array, i, 0);
         }
         sm.getredc(-1);
-        
+
         playSound("START.WAV"); // 힙 끝
     }
 
@@ -353,7 +353,6 @@ class AlgorithmRunnable implements Runnable {
 
     // 퀵 정렬 알고리즘
     private void quickSort(int[] array, int low, int high) {
-        
 
         if (low < high) {
             // pi is partitioning index, array[p] is now at right place
@@ -366,17 +365,15 @@ class AlgorithmRunnable implements Runnable {
             }
 
             quickSort(array, pi + 1, high);
-            
 
         }
-        
+
         sm.getgreenc(high - low);
         sm.getbluec(-1);
         sm.getcyanc(-1);
         sm.getredc(-1);
-        
+
     }
-    
 
     private int partition(int[] array, int low, int high) {
         // 중간 인덱스 계산
@@ -417,7 +414,7 @@ class AlgorithmRunnable implements Runnable {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     sm.getrunval(false);
-                    
+
                     Thread.currentThread().interrupt();
                 }
             }
@@ -436,7 +433,7 @@ class AlgorithmRunnable implements Runnable {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        
+
         return (i + 1);
 
     }

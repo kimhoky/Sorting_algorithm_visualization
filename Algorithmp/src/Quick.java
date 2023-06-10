@@ -12,26 +12,24 @@ public class Quick implements Runnable {
     int greenColumn;
     int cyanColumn;
     int blueColumn;
-    int allgo=0;
+    int allgo = 0;
     boolean runval = true;
-	sharedmemory sm = new sharedmemory();
-	
+    sharedmemory sm = new sharedmemory();
 
     @Override
     public void run() {
-        data= sm.putarray();
-        allgo=sm.putallgo();
+        data = sm.putarray();
+        allgo = sm.putallgo();
         Graph graph = new Graph();
         while (runval) {
-			
-			
-			runval=sm.putrunval();
-			if(!runval){
-				graph.setVisible(runval);
-				graph.dispose();
-				
-				break;
-			}
+
+            runval = sm.putrunval();
+            if (!runval) {
+                graph.setVisible(runval);
+                graph.dispose();
+
+                break;
+            }
             redColumn = sm.putredc();
             greenColumn = sm.putgreenc();
             cyanColumn = sm.putcyanc();
@@ -58,11 +56,11 @@ public class Quick implements Runnable {
     public class Graph extends JFrame {
 
         public Graph() {
-            if(allgo==1){
+            if (allgo == 1) {
                 setSize(sm.putsizex(), 500);
-                setLocation(1270,0);
-    
-            }else{
+                setLocation(1270, 0);
+
+            } else {
                 setSize(800, 500);
                 int x = sm.putblocx();
                 int y = sm.putblocy();
@@ -70,7 +68,7 @@ public class Quick implements Runnable {
             }
             setTitle("Quick Sort Graph");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
+
             add(graphPanel);
 
             setVisible(true);
@@ -105,9 +103,13 @@ public class Quick implements Runnable {
             }
             if (redColumn != -1) {
                 g.setColor(Color.RED);
-                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn,getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,data[redColumn] * columnHeight);
+                g.fillRect(2 * BORDER_WIDTH + columnWidth * redColumn,
+                        getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,
+                        data[redColumn] * columnHeight);
                 g.setColor(Color.BLACK);
-                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn,getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,data[redColumn] * columnHeight);
+                g.drawRect(2 * BORDER_WIDTH + columnWidth * redColumn,
+                        getHeight() - data[redColumn] * columnHeight - 2 * BORDER_WIDTH, columnWidth,
+                        data[redColumn] * columnHeight);
             }
             if (blueColumn != -1) {
                 g.setColor(Color.BLUE);
