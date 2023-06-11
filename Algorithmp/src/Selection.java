@@ -38,7 +38,7 @@ public class Selection implements Runnable {
             greenColumn = sm.putgreenc();
             cyanColumn = sm.putcyanc();
             blueColumn = sm.putbluec();
-            System.out.println(redColumn + " " + greenColumn + " " + cyanColumn + " " + blueColumn);
+           
 
             graphPanel.repaint();
             try {
