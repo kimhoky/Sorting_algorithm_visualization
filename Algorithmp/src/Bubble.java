@@ -87,10 +87,10 @@ public class Bubble implements Runnable {
 			add(graphPanel);
 
 			JLabel label = new JLabel("Bubble Sort");
-            Font font = new Font("Serif", Font.BOLD, 25);
-            label.setFont(font);
-            graphPanel.setLayout(new BorderLayout());
-            graphPanel.add(label, BorderLayout.NORTH);
+			Font font = new Font("Serif", Font.BOLD, 25);
+			label.setFont(font);
+			graphPanel.setLayout(new BorderLayout());
+			graphPanel.add(label, BorderLayout.NORTH);
 
 			setVisible(runval);
 			if (!runval) {

@@ -44,10 +44,9 @@ public class Main {
             Thread bubbleThread = new Thread(() -> {
 
                 AlgorithmRunnable algorithmRunnable = new AlgorithmRunnable(1, textPane, 1);
-                
+
                 algorithmRunnable.run();
 
-                
             });
             bubbleThread.start();
 
@@ -105,27 +104,32 @@ public class Main {
         Font font = new Font("Serif", Font.BOLD, 25);
         label.setFont(font);
 
-        if(choice!=6) {
+        if (choice != 6) {
             switch (choice) {
-                case 1 : label.setText("Bubble Sort");
-                frame.add(label, BorderLayout.NORTH);
-                break;
+                case 1:
+                    label.setText("Bubble Sort");
+                    frame.add(label, BorderLayout.NORTH);
+                    break;
 
-                case 2 : label.setText("Heap Sort");
-                frame.add(label, BorderLayout.NORTH);
-                break;
+                case 2:
+                    label.setText("Heap Sort");
+                    frame.add(label, BorderLayout.NORTH);
+                    break;
 
-                case 3 : label.setText("Quick Sort");
-                frame.add(label, BorderLayout.NORTH);
-                break;
+                case 3:
+                    label.setText("Quick Sort");
+                    frame.add(label, BorderLayout.NORTH);
+                    break;
 
-                case 4 : label.setText("Insertion Sort");
-                frame.add(label, BorderLayout.NORTH);
-                break;
+                case 4:
+                    label.setText("Insertion Sort");
+                    frame.add(label, BorderLayout.NORTH);
+                    break;
 
-                case 5 : label.setText("Selection Sort");
-                frame.add(label, BorderLayout.NORTH);
-                break;                        
+                case 5:
+                    label.setText("Selection Sort");
+                    frame.add(label, BorderLayout.NORTH);
+                    break;
             }
         }
 

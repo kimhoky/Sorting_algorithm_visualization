@@ -112,7 +112,7 @@ class AlgorithmRunnable implements Runnable {
     AlgorithmRunnable(int algorithmChoice, JTextPane textPane, int allgo) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
-        
+
         sm.getallgo(allgo);
     }
 
@@ -268,174 +268,173 @@ class AlgorithmRunnable implements Runnable {
     }
 
     // 힙 정렬 알고리즘
-private void heapSort(int[] array) {
-    int n = array.length;
-    playSound("START.WAV"); // 힙 정렬 시작 소리 재생
-    randomnum();
-    // 최대 힙 구성
-    for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(array, n, i);
-    }
-
-    // 힙 정렬
-    for (int i = n - 1; i >= 0; i--) {
-        // 현재 루트를 끝으로 이동
-        int temp = array[0];
-        array[0] = array[i];
-        array[i] = temp;
-        sm.getredc(i);
-        sm.getgreenc(i);
-
-        if (algorithmChoice != 6) {
-            printArray(array, 0, i);
+    private void heapSort(int[] array) {
+        int n = array.length;
+        playSound("START.WAV"); // 힙 정렬 시작 소리 재생
+        randomnum();
+        // 최대 힙 구성
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(array, n, i);
         }
 
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            sm.getrunval(false);
-            Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
-        }
+        // 힙 정렬
+        for (int i = n - 1; i >= 0; i--) {
+            // 현재 루트를 끝으로 이동
+            int temp = array[0];
+            array[0] = array[i];
+            array[i] = temp;
+            sm.getredc(i);
+            sm.getgreenc(i);
 
-        // 루트 요소 힙 정리
-        heapify(array, i, 0);
-    }
-    sm.getredc(-1);
-
-    playSound("START.WAV"); // 힙 정렬 종료 소리 재생
-}
-
-// 주어진 인덱스의 서브트리를 힙으로 만드는 함수
-private void heapify(int[] arr, int n, int i) {
-    int largest = i; // 최대값을 루트로 초기화
-    int left = 2 * i + 1; // left = 2*i + 1
-    int right = 2 * i + 2; // right = 2*i + 2
-    sm.getcyanc(left);
-    sm.getbluec(arr[i]);
-
-    // 만약 왼쪽 자식이 루트보다 크다면
-    if (left < n && arr[left] > arr[largest])
-        largest = left;
-
-    // 만약 오른쪽 자식이 현재까지 확인한 최대값보다 크다면
-    if (right < n && arr[right] > arr[largest])
-        largest = right;
-
-    // 만약 최대값이 루트가 아니라면
-    if (largest != i) {
-        int swap = arr[i];
-        arr[i] = arr[largest];
-        arr[largest] = swap;
-
-        if (algorithmChoice != 6) {
-            printArray(arr, i, largest);
-        }
-
-        try {
-            Thread.sleep(50);
-        } catch (InterruptedException e) {
-            sm.getrunval(false);
-            Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
-        }
-
-        // 재귀적으로 힙 정리 실행
-        heapify(arr, n, largest);
-    }
-}
- 
-// 배열이 정렬되었는지 확인하는 함수
-   private boolean isSorted(int[] array) {
-    for (int i = 1; i < array.length; i++) {
-        if (array[i] < array[i - 1]) {
-            return false;
-        }
-    }
-    return true;
-}
-
-// 퀵 정렬 알고리즘
-private void quickSort(int[] array, int low, int high) {
-
-    if (low < high) {
-       // 파티셔닝 인덱스 계산
-        int pi = partition(array, low, high);
-
-     
-        quickSort(array, low, pi - 1);
-        if (low > sm.putgreenc()) {
-            sm.getgreenc(low - 1);
-        }
-
-        quickSort(array, pi + 1, high);
-    }
-
-    sm.getgreenc(high - low);
-    sm.getbluec(-1);
-    sm.getcyanc(-1);
-    sm.getredc(-1);
-
-// 정렬 작업 후 배열이 정렬되었는지 확인
-    if (isSorted(array)) {
-        // If sorted, play the end sound
-        playSound("START.WAV");
-    }
-}
-
-private int partition(int[] array, int low, int high) {
-    // 중간 인덱스 계산
-    int mid = low + (high - low) / 2;
-
-    // low, high, mid의 값을 가져옴
-    int pivot = array[mid];
-
-    int temp = array[high];
-    array[high] = array[mid];
-    array[mid] = temp;
-    sm.getredc(pivot);
-
-    int i = low - 1; 
-
-    for (int j = low; j <= high - 1; j++) {
-        if (array[j] <= pivot) {
-            i++;
-            sm.getbluec(i);
-            //  array[i]  array[j] 교환
-            temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            sm.getcyanc(j);
-            if (i == pivot) {
-                sm.getredc(j);
-            } else if (j == pivot) {
-                sm.getredc(i);
-            }
             if (algorithmChoice != 6) {
-                printArray(array, i, j);
+                printArray(array, 0, i);
             }
-            // 교환 배열출력
+
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
                 sm.getrunval(false);
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
             }
+
+            // 루트 요소 힙 정리
+            heapify(array, i, 0);
         }
-    }
-    temp = array[i + 1];
-    array[i + 1] = array[high];
-    array[high] = temp;
-    if (algorithmChoice != 6) {
-        printArray(array, i + 1, high);
-    }
-    // 교환 배열출력
-    try {
-        Thread.sleep(50);
-    } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
+        sm.getredc(-1);
+
+        playSound("START.WAV"); // 힙 정렬 종료 소리 재생
     }
 
-    return (i + 1);
-}
+    // 주어진 인덱스의 서브트리를 힙으로 만드는 함수
+    private void heapify(int[] arr, int n, int i) {
+        int largest = i; // 최대값을 루트로 초기화
+        int left = 2 * i + 1; // left = 2*i + 1
+        int right = 2 * i + 2; // right = 2*i + 2
+        sm.getcyanc(left);
+        sm.getbluec(arr[i]);
+
+        // 만약 왼쪽 자식이 루트보다 크다면
+        if (left < n && arr[left] > arr[largest])
+            largest = left;
+
+        // 만약 오른쪽 자식이 현재까지 확인한 최대값보다 크다면
+        if (right < n && arr[right] > arr[largest])
+            largest = right;
+
+        // 만약 최대값이 루트가 아니라면
+        if (largest != i) {
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+
+            if (algorithmChoice != 6) {
+                printArray(arr, i, largest);
+            }
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                sm.getrunval(false);
+                Thread.currentThread().interrupt(); // 인터럽트 발생 시 현재 스레드를 중단합니다.
+            }
+
+            // 재귀적으로 힙 정리 실행
+            heapify(arr, n, largest);
+        }
+    }
+
+    // 배열이 정렬되었는지 확인하는 함수
+    private boolean isSorted(int[] array) {
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] < array[i - 1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 퀵 정렬 알고리즘
+    private void quickSort(int[] array, int low, int high) {
+
+        if (low < high) {
+            // 파티셔닝 인덱스 계산
+            int pi = partition(array, low, high);
+
+            quickSort(array, low, pi - 1);
+            if (low > sm.putgreenc()) {
+                sm.getgreenc(low - 1);
+            }
+
+            quickSort(array, pi + 1, high);
+        }
+
+        sm.getgreenc(high - low);
+        sm.getbluec(-1);
+        sm.getcyanc(-1);
+        sm.getredc(-1);
+
+        // 정렬 작업 후 배열이 정렬되었는지 확인
+        if (isSorted(array)) {
+            // If sorted, play the end sound
+            playSound("START.WAV");
+        }
+    }
+
+    private int partition(int[] array, int low, int high) {
+        // 중간 인덱스 계산
+        int mid = low + (high - low) / 2;
+
+        // low, high, mid의 값을 가져옴
+        int pivot = array[mid];
+
+        int temp = array[high];
+        array[high] = array[mid];
+        array[mid] = temp;
+        sm.getredc(pivot);
+
+        int i = low - 1;
+
+        for (int j = low; j <= high - 1; j++) {
+            if (array[j] <= pivot) {
+                i++;
+                sm.getbluec(i);
+                // array[i] array[j] 교환
+                temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+                sm.getcyanc(j);
+                if (i == pivot) {
+                    sm.getredc(j);
+                } else if (j == pivot) {
+                    sm.getredc(i);
+                }
+                if (algorithmChoice != 6) {
+                    printArray(array, i, j);
+                }
+                // 교환 배열출력
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    sm.getrunval(false);
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        temp = array[i + 1];
+        array[i + 1] = array[high];
+        array[high] = temp;
+        if (algorithmChoice != 6) {
+            printArray(array, i + 1, high);
+        }
+        // 교환 배열출력
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        return (i + 1);
+    }
 
     // 삽입 정렬 알고리즘
     private void insertionSort(int[] array) {
