@@ -40,6 +40,8 @@ public class Main {
         }
 
         // 알고리즘 실행
+        //all start(6)을 입력시 모든 초이스를 넣어 5개의 스레드 시작
+        //그 이외는 선택된 초이스만 넣어 시작
         if (choice == 6) {
             Thread bubbleThread = new Thread(() -> {
 
@@ -94,7 +96,8 @@ public class Main {
         // 알고리즘 실행이 끝난 후에 선택 창으로 돌아가는 버튼을 생성합니다.
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> {
-            algorithmThread.interrupt();
+            algorithmThread.interrupt(); //알고리즘 스레드를 인터럽트를 통해 정지시키며 알고리즘 스레드의 catch문을 통해 그래프 스레드를 정지시킴.
+            
 
             frame.setVisible(false); // 현재 프레임을 숨깁니다.
             frame.dispose(); // 현재 프레임을 파괴합니다.

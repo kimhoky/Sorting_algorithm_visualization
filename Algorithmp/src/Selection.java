@@ -21,7 +21,7 @@ public class Selection implements Runnable {
 
     @Override
     public void run() {
-        // 비워두었습니다.
+    	//프레임창을 띄우고 while문을 통하여 변경값을 받아 계속 다시 그려줌.
         data = sm.putarray();
         allgo = sm.putallgo();
         Graph graph = new Graph();
@@ -74,7 +74,7 @@ public class Selection implements Runnable {
             setTitle("Selection Sort Graph");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // 생성된 난수 출력
+        
 
             add(graphPanel);
 

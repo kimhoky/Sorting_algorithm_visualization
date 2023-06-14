@@ -15,7 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 class sharedmemory {
-
+	//각 정렬그래프 그려주는 스레드로 값을 전달하는것에 사용되는 클래스
     int[] array;
     private int redColumn = -1;
     private int greenColumn = -1;
@@ -99,20 +99,20 @@ class sharedmemory {
 
 class AlgorithmRunnable implements Runnable {
     private int algorithmChoice;
+    private int allgo =0;
     private JTextPane textPane;
     int[] array;
-    int j = 1;
-    int[] bubblearray = new int[100];
-    int[] heaparray = new int[100];
-    int[] quickarray = new int[100];
-    int[] insertarray = new int[100];
-    int[] selectionarray = new int[100];
+    int[] bubblearray = new int[128];
+    int[] heaparray = new int[128];
+    int[] quickarray = new int[128];
+    int[] insertarray = new int[128];
+    int[] selectionarray = new int[128];
 
     // 생성자: 알고리즘 선택과 JTextPane를 받아서 초기화합니다.
     AlgorithmRunnable(int algorithmChoice, JTextPane textPane, int allgo) {
         this.algorithmChoice = algorithmChoice;
         this.textPane = textPane;
-
+        this.allgo = allgo;
         sm.getallgo(allgo);
     }
 
@@ -124,12 +124,12 @@ class AlgorithmRunnable implements Runnable {
     sharedmemory sm = new sharedmemory();
 
     public int[] randomnum() {
-        array = new int[100];
+        array = new int[128];
         for (int i = 0; i < array.length; i++) {
             array[i] = i + 1;
         }
 
-        // Shuffle the array using Fisher-Yates algorithm
+        
         Random random = new Random();
         for (int i = array.length - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
@@ -148,14 +148,13 @@ class AlgorithmRunnable implements Runnable {
         insertarray = randomnum();
         selectionarray = randomnum();
 
-        j = 1;
 
         tr1 = new Thread(new Bubble(sm));
         tr2 = new Thread(new Heap(sm));
         tr3 = new Thread(new Quick(sm));
         tr4 = new Thread(new Insert(sm));
         tr5 = new Thread(new Selection(sm));
-        // sm.getrunval(true);
+        
         switch (algorithmChoice) {
             case 1:
                 appendText("버블 정렬 실행...\n", null);
@@ -239,7 +238,7 @@ class AlgorithmRunnable implements Runnable {
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
                     swapped = true;
-                    if (algorithmChoice != 6) {
+                    if (allgo != 1) {
                         printArray(array, j, j + 1);
                     }
                     // 교환 후 배열 출력0.5초대기
@@ -271,7 +270,6 @@ class AlgorithmRunnable implements Runnable {
     private void heapSort(int[] array) {
         int n = array.length;
         playSound("START.WAV"); // 힙 정렬 시작 소리 재생
-        randomnum();
         // 최대 힙 구성
         for (int i = n / 2 - 1; i >= 0; i--) {
             heapify(array, n, i);
@@ -286,7 +284,7 @@ class AlgorithmRunnable implements Runnable {
             sm.getredc(i);
             sm.getgreenc(i);
 
-            if (algorithmChoice != 6) {
+            if (allgo != 1) {
                 printArray(array, 0, i);
             }
 
@@ -327,7 +325,7 @@ class AlgorithmRunnable implements Runnable {
             arr[i] = arr[largest];
             arr[largest] = swap;
 
-            if (algorithmChoice != 6) {
+            if (allgo != 1) {
                 printArray(arr, i, largest);
             }
 
@@ -375,7 +373,7 @@ class AlgorithmRunnable implements Runnable {
 
         // 정렬 작업 후 배열이 정렬되었는지 확인
         if (isSorted(array)) {
-            // If sorted, play the end sound
+            //정렬이 완료되었으면 소리재생.
             playSound("START.WAV");
         }
     }
@@ -408,7 +406,7 @@ class AlgorithmRunnable implements Runnable {
                 } else if (j == pivot) {
                     sm.getredc(i);
                 }
-                if (algorithmChoice != 6) {
+                if (allgo != 1) {
                     printArray(array, i, j);
                 }
                 // 교환 배열출력
@@ -423,7 +421,7 @@ class AlgorithmRunnable implements Runnable {
         temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
-        if (algorithmChoice != 6) {
+        if (allgo != 1) {
             printArray(array, i + 1, high);
         }
         // 교환 배열출력
@@ -445,11 +443,7 @@ class AlgorithmRunnable implements Runnable {
             sm.getredc(i);
 
             int j;
-            /*
-             * Move elements of arr[0..i-1], that are
-             * greater than key, to one position ahead
-             * of their current position
-             */
+           
             for (j = i - 1; j >= 0 && array[j] > array[j + 1]; j--) {
 
                 sm.getredc(j + 1);
@@ -457,7 +451,7 @@ class AlgorithmRunnable implements Runnable {
                 array[j + 1] = array[j];
                 array[j] = tmp;
 
-                if (algorithmChoice != 6) {
+                if (allgo != 1) {
                     printArray(array, j, j + 1);
                 }
 
@@ -506,7 +500,7 @@ class AlgorithmRunnable implements Runnable {
             }
 
             sm.getgreenc(s++);
-            if (algorithmChoice != 6) {
+            if (allgo != 1) {
                 printArray(array, i, minIdx);
             }
 

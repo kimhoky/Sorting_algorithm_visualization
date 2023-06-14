@@ -21,7 +21,7 @@ public class Heap implements Runnable {
 
     @Override
     public void run() {
-        // 비워두었습니다.
+    	//프레임창을 띄우고 while문을 통하여 변경값을 받아 계속 다시 그려줌.
         data = sm.putarray();
         allgo = sm.putallgo();
         Graph graph = new Graph();
@@ -73,10 +73,6 @@ public class Heap implements Runnable {
             }
             setTitle("Heap Sort Graph");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            // 데이터 생성
-
-            // 생성된 난수 출력
 
             add(graphPanel);
 
